@@ -1,0 +1,2 @@
+@props(['name', 'label', 'options'])
+<fieldset><legend class="provider-label">{{ $label }}</legend><div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">@foreach($options as $value => $text)<label class="flex items-center gap-2 rounded-lg border border-gray-200 p-3 text-sm"><input class="rounded border-gray-300 text-red-800" type="checkbox" name="{{ $name }}[]" value="{{ $value }}" @checked(in_array($value, old($name, [])))>{{ $text }}</label>@endforeach</div></fieldset>

@@ -1,0 +1,2 @@
+@props(['name', 'label', 'options'])
+<label class="block" for="{{ $name }}"><span class="provider-label">{{ $label }}</span><select {{ $attributes->merge(['class' => 'provider-input']) }} id="{{ $name }}" name="{{ $name }}"><option value="">Seleccione</option>@foreach($options as $value => $text)<option value="{{ $value }}" @selected(old($name) === $value)>{{ $text }}</option>@endforeach</select>@error($name)<span class="provider-error">{{ $message }}</span>@enderror</label>
