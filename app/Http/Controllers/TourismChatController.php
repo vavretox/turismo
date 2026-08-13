@@ -6,6 +6,7 @@ use App\Models\Destino;
 use App\Models\Evento;
 use App\Models\Noticia;
 use App\Models\ProvinciaTuristica;
+use App\Services\TourismGuide;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,9 +14,14 @@ use Illuminate\Support\Str;
 
 class TourismChatController extends Controller
 {
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request, TourismGuide $guide): JsonResponse
     {
-        $data = $request->validate(['message' => ['required', 'string', 'min:2', 'max:500']]);
+        $data = $request->validate([
+            'message' => ['required', 'string', 'min:2', 'max:500'],
+            'history' => ['sometimes', 'array', 'max:6'],
+            'history.*.role' => ['required', 'in:user,assistant'],
+            'history.*.content' => ['required', 'string', 'max:500'],
+        ]);
         $question = Str::lower($data['message']);
         $terms = collect(preg_split('/\s+/u', $question))
             ->map(fn ($term) => trim($term, "¿?¡!.,;:\"'()"))
@@ -65,9 +71,13 @@ class TourismChatController extends Controller
             ? 'No encontré información publicada que coincida exactamente. Puedes preguntarme por una provincia, un destino, una bodega, un evento o una actividad específica.'
             : 'Encontré esta información en nuestro portal. Selecciona una opción para conocer todos los detalles:';
 
+        $sources = $results->all();
+        $answer = $guide->answer($data['message'], $data['history'] ?? [], $sources) ?: $fallbackAnswer;
+
         return response()->json([
-            'answer' => $fallbackAnswer,
+            'answer' => $answer,
             'results' => $results,
+            'ai' => $answer !== $fallbackAnswer,
         ]);
     }
 }

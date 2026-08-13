@@ -15,7 +15,7 @@
 
         <div id="widget-chat-pane" class="flex min-h-0 flex-1 flex-col">
             <div id="tourism-chat-messages" class="tourism-chat-messages">
-                <div class="chat-message-bot">¡Hola! Soy tu guía virtual. Pregúntame por destinos, municipios, eventos o experiencias publicadas en este portal.</div>
+                <div class="chat-message-bot">¡Hola! Soy tu guía turístico inteligente de Tarija. Puedo ayudarte a descubrir destinos, municipios, eventos y experiencias del portal.</div>
             </div>
             <div class="px-4 pb-2">
                 <div class="flex gap-2 overflow-x-auto pb-1">
@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const chatInput = document.getElementById('tourism-chat-input');
     const messages = document.getElementById('tourism-chat-messages');
     const csrf = document.querySelector('meta[name="csrf-token"]').content;
+    const conversation = [];
 
     if (!widget || !panel || widget.dataset.windowBound === 'true') return;
     widget.dataset.windowBound = 'true';
@@ -151,9 +152,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (text.length < 2 || chatForm.dataset.loading === 'true') return;
 
         addChatMessage(text, 'user');
+        const history = conversation.slice(-6);
+        conversation.push({ role: 'user', content: text });
         chatInput.value = '';
         chatForm.dataset.loading = 'true';
-        const loading = addChatMessage('Buscando información publicada...', 'bot');
+        const loading = addChatMessage('Preparando una recomendación para ti...', 'bot');
 
         try {
             const response = await fetch(widget.dataset.chatUrl, {
@@ -163,7 +166,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     'Accept': 'application/json',
                     'X-CSRF-TOKEN': csrf
                 },
-                body: JSON.stringify({ message: text })
+                body: JSON.stringify({ message: text, history: history })
             });
             const data = await response.json();
             loading.remove();
@@ -173,6 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             addChatMessage(data.answer, 'bot', data.results);
+            conversation.push({ role: 'assistant', content: data.answer });
         } catch (error) {
             loading.remove();
             addChatMessage(error.message || 'No pude conectarme. Intenta nuevamente.', 'bot');
