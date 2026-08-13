@@ -23,7 +23,11 @@ class SecurityHeaders
         // Alpine evaluates the expressions used by x-data, x-show and event
         // bindings at runtime. Without unsafe-eval the bundle loads, but every
         // interactive component is left in its uninitialized state.
-        $scriptPolicy = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://translate.googleusercontent.com https://www.gstatic.com; ";
+        $isVirtualTour = $request->routeIs('tours-360.*');
+        $virtualTourScriptSources = $isVirtualTour ? ' https://cdn.jsdelivr.net' : '';
+        $virtualTourStyleSources = $isVirtualTour ? ' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com' : '';
+        $virtualTourFontSources = $isVirtualTour ? ' https://cdnjs.cloudflare.com' : '';
+        $scriptPolicy = "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://translate.google.com https://translate.googleapis.com https://translate.googleusercontent.com https://www.gstatic.com{$virtualTourScriptSources}; ";
 
         $secureTransportPolicy = $request->isSecure() ? '; upgrade-insecure-requests' : '';
         $frameAncestors = $allowsSameOriginFrame ? "'self'" : "'none'";
@@ -32,8 +36,8 @@ class SecurityHeaders
             'Content-Security-Policy',
             "default-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors {$frameAncestors}; ".
             $scriptPolicy.
-            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.google.com https://translate.googleapis.com https://translate.googleusercontent.com https://www.gstatic.com; ".
-            "font-src 'self' https://fonts.gstatic.com data:; ".
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://translate.google.com https://translate.googleapis.com https://translate.googleusercontent.com https://www.gstatic.com{$virtualTourStyleSources}; ".
+            "font-src 'self' https://fonts.gstatic.com data:{$virtualTourFontSources}; ".
             "img-src 'self' data: blob: https:; ".
             "connect-src 'self' https:; ".
             "frame-src 'self' https://www.openstreetmap.org https://www.google.com https://maps.google.com https://translate.google.com https://translate.googleapis.com https://translate.googleusercontent.com; ".

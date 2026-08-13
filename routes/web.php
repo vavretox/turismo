@@ -18,6 +18,7 @@ use App\Http\Controllers\WeeklyActivityController;
 use App\Http\Controllers\TourismServiceProviderController;
 use App\Http\Controllers\ProviderPortalController;
 use App\Http\Controllers\PublicPlaceController;
+use App\Http\Controllers\VirtualTourController;
 use App\Http\Controllers\ProviderOfferingController;
 use App\Http\Middleware\EnsureAdmin;
 
@@ -44,6 +45,8 @@ Route::get('/consulta-prestadores-turisticos', [TourismServiceProviderController
 Route::get('/admin/prestadores/{provider}/documentos/{index}', [TourismServiceProviderController::class, 'download'])->middleware(EnsureAdmin::class.':prestadores_turisticos')->name('prestadores.documents.download');
 Route::get('/admin/prestadores/{provider}/documentos/{index}/ver', [TourismServiceProviderController::class, 'preview'])->middleware(EnsureAdmin::class.':prestadores_turisticos')->name('prestadores.documents.preview');
 Route::get('/mapa-interactivo', InteractiveMapController::class)->name('mapa.interactivo');
+Route::get('/tours-360', [VirtualTourController::class, 'index'])->name('tours-360.index');
+Route::get('/tours-360/{tour}', [VirtualTourController::class, 'show'])->name('tours-360.show');
 Route::get('/lugares/{place}', [PublicPlaceController::class, 'show'])->name('lugares.show');
 Route::get('/inspirame', InspireController::class)->name('inspirame');
 Route::post('/inspirame/generar', GenerateItineraryController::class)->middleware('throttle:10,1')->name('inspirame.generate');

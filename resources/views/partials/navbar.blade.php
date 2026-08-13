@@ -22,7 +22,7 @@
             <div class="menu-panel hidden items-center justify-center gap-1 xl:flex">
                 <a class="nav-link {{ request()->routeIs('home') ? $activeNavClass : '' }}" href="{{ route('home') }}"><i class="fa-solid fa-house"></i>{{ __('ui.home') }}</a>
                 <div class="nav-dropdown">
-                    <button class="nav-link {{ request()->routeIs('destinos*', 'municipios.*', 'mapa.*', 'inspirame') ? $activeNavClass : '' }}" type="button" aria-haspopup="true"><i class="fa-solid fa-compass"></i>{{ __('ui.explore') }}<i class="fa-solid fa-chevron-down nav-chevron"></i></button>
+                    <button class="nav-link {{ request()->routeIs('destinos*', 'municipios.*', 'mapa.*', 'inspirame', 'tours-360.*') ? $activeNavClass : '' }}" type="button" aria-haspopup="true"><i class="fa-solid fa-compass"></i>{{ __('ui.explore') }}<i class="fa-solid fa-chevron-down nav-chevron"></i></button>
                     <div class="nav-submenu nav-submenu-wide">
                         <div class="nav-submenu-heading"><span>{{ __('nav.discover_tarija') }}</span><small>{{ __('nav.choose_start') }}</small></div>
                         <div class="grid grid-cols-2 gap-2 p-3">
@@ -30,6 +30,7 @@
                             <a href="{{ route('mapa.interactivo') }}"><i class="fa-solid fa-map"></i><span><strong>{{ __('nav.tourism_map') }}</strong><small>{{ __('nav.explore_location') }}</small></span></a>
                             <a href="{{ route('municipios.index') }}"><i class="fa-solid fa-mountain-sun"></i><span><strong>{{ __('ui.municipalities') }}</strong><small>{{ __('nav.eleven_destinations') }}</small></span></a>
                             <a href="{{ route('inspirame') }}"><i class="fa-solid fa-wand-magic-sparkles"></i><span><strong>{{ __('ui.inspire') }}</strong><small>{{ __('nav.create_itinerary') }}</small></span></a>
+                            <a href="{{ route('tours-360.index') }}" target="_blank" rel="noopener"><i class="fa-solid fa-vr-cardboard"></i><span><strong>Tours 360°</strong><small>Recorridos virtuales</small></span></a>
                         </div>
                     </div>
                 </div>
@@ -104,7 +105,7 @@
             <div class="rounded-xl bg-red-50/70">
                 <button class="flex w-full items-center justify-between rounded-xl px-3 py-2 font-bold text-red-950" type="button" @click="mobileExploreOpen = ! mobileExploreOpen"><span><i class="fa-solid fa-compass mr-2 text-red-700"></i>{{ __('Explorar') }}</span><i class="fa-solid fa-chevron-down text-xs transition-transform" :class="mobileExploreOpen && 'rotate-180'"></i></button>
                 <div class="grid grid-cols-2 gap-1 px-2 pb-2" x-cloak x-show="mobileExploreOpen" x-transition>
-                    <a class="mobile-submenu-link" href="{{ route('destinos') }}">{{ __('ui.destinations') }}</a><a class="mobile-submenu-link" href="{{ route('mapa.interactivo') }}">{{ __('nav.map') }}</a><a class="mobile-submenu-link" href="{{ route('municipios.index') }}">{{ __('ui.municipalities') }}</a><a class="mobile-submenu-link" href="{{ route('inspirame') }}">{{ __('ui.inspire') }}</a>
+                    <a class="mobile-submenu-link" href="{{ route('destinos') }}">{{ __('ui.destinations') }}</a><a class="mobile-submenu-link" href="{{ route('mapa.interactivo') }}">{{ __('nav.map') }}</a><a class="mobile-submenu-link" href="{{ route('municipios.index') }}">{{ __('ui.municipalities') }}</a><a class="mobile-submenu-link" href="{{ route('inspirame') }}">{{ __('ui.inspire') }}</a><a class="mobile-submenu-link" href="{{ route('tours-360.index') }}" target="_blank" rel="noopener">Tours 360°</a>
                 </div>
             </div>
             <div class="rounded-xl bg-red-50/70">

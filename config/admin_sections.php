@@ -12,6 +12,7 @@ use App\Filament\Resources\ProvinciaTuristicaResource;
 use App\Filament\Resources\SiteIdentityResource;
 use App\Filament\Resources\TourismServiceProviderResource;
 use App\Filament\Resources\WeeklyActivityResource;
+use App\Filament\Resources\VirtualTourResource;
 
 return [
     'destinos' => ['label' => 'Destinos', 'resource' => DestinoResource::class],
@@ -21,6 +22,7 @@ return [
     'municipios' => ['label' => 'Municipios turísticos', 'resource' => ProvinciaTuristicaResource::class],
     'actividad_semanal' => ['label' => 'Actividad de la semana', 'resource' => WeeklyActivityResource::class],
     'lugares_mapa' => ['label' => 'Lugares del mapa', 'resource' => AttractionPlaceResource::class],
+    'tours_360' => ['label' => 'Fotografías 360°', 'resource' => VirtualTourResource::class],
     'tipos_atractivo' => ['label' => 'Tipos de atractivo', 'resource' => AttractionTypeResource::class],
     'imagenes_portal' => ['label' => 'Imágenes del portal', 'resource' => PortalImageResource::class],
     'identidad_sitio' => ['label' => 'Identidad y tipografía', 'resource' => SiteIdentityResource::class],
